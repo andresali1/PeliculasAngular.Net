@@ -16,7 +16,7 @@ export class LandingPageComponent implements OnInit {
         fechaLanzamiento: new Date(),
         precio: 1400.99,
         poster:
-          'https://play-lh.googleusercontent.com/MvfGP_wh_Peqm5w0LJEaohuWPItwxkAFoIaj3SeVOc08_OEH468DEGChvF2dCudUj6Xy',
+          'https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p29821_v_v13_au.jpg',
       },
       {
         titulo: 'Mohana',
@@ -47,7 +47,7 @@ export class LandingPageComponent implements OnInit {
         fechaLanzamiento: new Date('1995-12-31'),
         precio: 90.1,
         poster:
-          'https://play-lh.googleusercontent.com/f8yPeTFYv3xr48xgY8tlvi3fGhpyr1jCJPcQn-_Z5wotLWiKArP9vVhapOqY6qhKchLNEg',
+          'https://flxt.tmsimg.com/assets/p12871_p_v13_av.jpg',
       },
     ];
   }
