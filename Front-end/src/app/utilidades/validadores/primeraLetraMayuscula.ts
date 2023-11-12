@@ -1,7 +1,7 @@
 import { AbstractControl, ValidatorFn } from '@angular/forms';
 
 export function primeraLetraMayuscula(): ValidatorFn {
-    return (control: AbstractControl) => {
+    return(control: AbstractControl) => {
         const valor = <string>control.value;
         if(!valor) return;
         if(valor.length === 0) return;
@@ -9,7 +9,7 @@ export function primeraLetraMayuscula(): ValidatorFn {
         const primeraLetra = valor[0];
         if(primeraLetra !== primeraLetra.toUpperCase()){
             return {
-                primeraLetraMayuscula: {
+                primeraLetraMayuscula:{
                     mensaje: 'La primera letra debe ser mayúscula'
                 }
             };

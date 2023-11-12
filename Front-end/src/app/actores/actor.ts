@@ -1,4 +1,4 @@
-export interface actorDTO{
+export interface actorDTO {
   nombre: string;
   fechaNacimiento: Date;
   foto: string;

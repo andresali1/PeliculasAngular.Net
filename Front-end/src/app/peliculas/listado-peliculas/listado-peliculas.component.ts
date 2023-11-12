@@ -3,14 +3,20 @@ import { Component, Input, OnInit } from '@angular/core';
 @Component({
   selector: 'app-listado-peliculas',
   templateUrl: './listado-peliculas.component.html',
-  styleUrls: ['./listado-peliculas.component.css'],
+  styleUrls: ['./listado-peliculas.component.css']
 })
 export class ListadoPeliculasComponent implements OnInit {
-  @Input() peliculas;
 
-  ngOnInit(): void {}
+  constructor() { }
+  @Input()
+  peliculas;
 
-  remover(indicePelicula: number):void {
+  ngOnInit(): void {
+    
+  }
+
+  remover(indicePelicula: number): void {
     this.peliculas.splice(indicePelicula, 1);
   }
+
 }

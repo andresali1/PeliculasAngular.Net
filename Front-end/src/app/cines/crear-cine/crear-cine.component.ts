@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { cineCreacionDTO } from '../cine';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-crear-cine',
   templateUrl: './crear-cine.component.html',
-  styleUrls: ['./crear-cine.component.css'],
+  styleUrls: ['./crear-cine.component.css']
 })
-export class CrearCineComponent {
-  guardarCambios(cine: cineCreacionDTO): void {
-    console.log(cine);
+export class CrearCineComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
   }
+
 }

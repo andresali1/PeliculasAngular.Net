@@ -1,6 +1,6 @@
-<form (submit)="OnSubmit()" [formGroup]="form">
+<form (submit)="guardarCambios()" [formGroup]="form">
   <mat-form-field appearance="outline">
-    <mat-label>Nombre</mat-label>
+    <mat-label>Nombre*</mat-label>
     <input formControlName="nombre" matInput />
     <mat-error *ngIf="form.invalid">{{ obtenerErrorCampoNombre() }}</mat-error>
   </mat-form-field>
@@ -15,14 +15,15 @@
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
 
-  <app-input-img [urlImagenActual]="modelo?.foto" (archivoSeleccionado)="archivoSeleccionado($event)"></app-input-img>
-
-  <app-input-markdown (biografia)="cambioMarkdown($event)"></app-input-markdown>
+  <app-input-img
+    [urlImagenActual]="modelo?.foto"
+    (archivoSeleccionado)="archivoSeleccionado($event)"
+  ></app-input-img>
 
   <div>
     <button mat-flat-button color="primary" [disabled]="form.invalid">
       Guardar Cambios
     </button>
-    <a mat-stroked-button routerLink="/actores"> Cancelar </a>
+    <a mat-stroked-button routerLink="/actores">Cancelar</a>
   </div>
 </form>

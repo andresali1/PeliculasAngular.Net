@@ -1,7 +1,7 @@
 .checked {
-  color: orange;
+    color: orange;
 }
 
-mat-icon {
-  cursor: pointer;
+mat-icon{
+    cursor: pointer;
 }

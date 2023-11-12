@@ -1,68 +1,63 @@
-import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AppRoutingModule } from './app.routing.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { NgModule } from '@angular/core';
 
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ListadoPeliculasComponent } from './peliculas/listado-peliculas/listado-peliculas.component';
 import { ListadoGenericoComponent } from './utilidades/listado-generico/listado-generico.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from './material/material.module';
+import { ReactiveFormsModule } from '@angular/forms';
+
+import {MaterialModule} from './material/material.module';
 import { MenuComponent } from './menu/menu.component';
 import { RatingComponent } from './utilidades/rating/rating.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
-import { IndiceGenerosComponent } from './generos/indice-generos/indice-generos.component';
-import { CrearGeneroComponent } from './generos/crear-genero/crear-genero.component';
-import { IndiceActoresComponent } from './actores/indice-actores/indice-actores.component';
 import { CrearActorComponent } from './actores/crear-actor/crear-actor.component';
-import { IndiceCinesComponent } from './cines/indice-cines/indice-cines.component';
-import { CrearCineComponent } from './cines/crear-cine/crear-cine.component';
-import { CrearPeliculaComponent } from './peliculas/crear-pelicula/crear-pelicula.component';
 import { EditarActorComponent } from './actores/editar-actor/editar-actor.component';
+import { IndiceActoresComponent } from './actores/indice-actores/indice-actores.component';
+import { CrearCineComponent } from './cines/crear-cine/crear-cine.component';
 import { EditarCineComponent } from './cines/editar-cine/editar-cine.component';
-import { EditarPeliculaComponent } from './peliculas/editar-pelicula/editar-pelicula.component';
+import { IndiceCinesComponent } from './cines/indice-cines/indice-cines.component';
+import { CrearGeneroComponent } from './generos/crear-genero/crear-genero.component';
 import { EditarGeneroComponent } from './generos/editar-genero/editar-genero.component';
+import { IndiceGenerosComponent } from './generos/indice-generos/indice-generos.component';
+import { CrearPeliculaComponent } from './peliculas/crear-pelicula/crear-pelicula.component';
+import { EditarPeliculaComponent } from './peliculas/editar-pelicula/editar-pelicula.component';
 import { FormularioGenerosComponent } from './generos/formulario-generos/formulario-generos.component';
 import { FiltroPeliculasComponent } from './peliculas/filtro-peliculas/filtro-peliculas.component';
 import { FormularioActoresComponent } from './actores/formulario-actores/formulario-actores.component';
 import { InputImgComponent } from './utilidades/input-img/input-img.component';
-import { InputMarkdownComponent } from './utilidades/input-markdown/input-markdown.component';
-import { MarkdownModule } from 'ngx-markdown';
-import { FormularioCineComponent } from './cines/formulario-cine/formulario-cine.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ListadoPeliculasComponent,
-    FiltroPeliculasComponent,
-    CrearPeliculaComponent,
-    EditarPeliculaComponent,
     ListadoGenericoComponent,
     MenuComponent,
     RatingComponent,
     LandingPageComponent,
     IndiceGenerosComponent,
     CrearGeneroComponent,
-    EditarGeneroComponent,
-    FormularioGenerosComponent,
     IndiceActoresComponent,
     CrearActorComponent,
-    EditarActorComponent,
-    FormularioActoresComponent,
-    IndiceCinesComponent,
+    CrearPeliculaComponent,
     CrearCineComponent,
+    IndiceCinesComponent,
+    EditarActorComponent,
+    EditarGeneroComponent,
     EditarCineComponent,
-    FormularioCineComponent,
+    EditarPeliculaComponent,
+    FormularioGenerosComponent,
+    FiltroPeliculasComponent,
+    FormularioActoresComponent,
     InputImgComponent,
-    InputMarkdownComponent
   ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-    MarkdownModule.forRoot()
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

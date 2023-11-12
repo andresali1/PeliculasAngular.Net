@@ -12,8 +12,13 @@ export class FormularioGenerosComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) {}
 
   form: FormGroup;
-  @Input() modelo: generoCreacionDTO;
-  @Output() submit:EventEmitter<generoCreacionDTO> = new EventEmitter<generoCreacionDTO>();
+
+  @Input()
+  modelo: generoCreacionDTO;
+
+  @Output()
+  datos: EventEmitter<generoCreacionDTO> =
+    new EventEmitter<generoCreacionDTO>();
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -35,21 +40,21 @@ export class FormularioGenerosComponent implements OnInit {
   }
 
   obtenerErrorCampoNombre() {
-    let campo = this.form.get('nombre');
+    var campo = this.form.get('nombre');
     if (campo.hasError('required')) {
       return 'El campo Nombre es requerido';
     }
     if (campo.hasError('minlength')) {
-      return 'La longitud minima es de 3 caracteres';
+      return 'La longitud mínima es de 3 caracteres';
     }
     if (campo.hasError('primeraLetraMayuscula')) {
       return campo.getError('primeraLetraMayuscula').mensaje;
     }
+
     return '';
   }
 
-  guardarCambios(): void {
-    this.submit.emit(this.form.value);
+  guardarCambios() {
+    this.datos.emit(this.form.value);
   }
 }
-

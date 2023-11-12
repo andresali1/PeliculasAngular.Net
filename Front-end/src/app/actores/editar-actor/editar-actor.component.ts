@@ -11,18 +11,18 @@ export class EditarActorComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute) {}
 
   modelo: actorDTO = {
-    nombre: 'Juan',
+    nombre: 'Camilo',
     fechaNacimiento: new Date(),
-    foto: 'https://elcomercio.pe/resizer/caCMkq8So8AZfe8s7QMkUnxilPA=/1200x900/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/N54U3HPM4JGH7JMZSAU6K635N4.jpg'
-  }
+    foto: 'https://concepto.de/wp-content/uploads/2018/08/persona-e1533759204552.jpg',
+  };
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(params => {
-      //alert(params.id);
+    this.activatedRoute.params.subscribe((params) => {
+      // alert(params.id);
     });
   }
 
-  guardarCambios(actor: actorCreacionDTO){
+  guardarCambios(actor: actorCreacionDTO) {
     console.log(actor);
   }
 }

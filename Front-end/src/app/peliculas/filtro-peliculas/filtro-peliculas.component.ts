@@ -1,6 +1,6 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -16,6 +16,7 @@ export class FiltroPeliculasComponent implements OnInit {
   ) {}
 
   form: FormGroup;
+
   generos = [
     { id: 1, nombre: 'Drama' },
     { id: 2, nombre: 'Comedia' },
@@ -24,48 +25,49 @@ export class FiltroPeliculasComponent implements OnInit {
 
   peliculas = [
     {
-      titulo: 'SpiderMan',
-      enCines: true,
-      proximosEstrenos: false,
+      titulo: 'Spider Man 1',
+      enCines: false,
+      proximosEstrenos: true,
       generos: [2, 3],
       poster:
-        'https://play-lh.googleusercontent.com/MvfGP_wh_Peqm5w0LJEaohuWPItwxkAFoIaj3SeVOc08_OEH468DEGChvF2dCudUj6Xy',
+        'https://resizing.flixster.com/b9rNJVStNlFHkXlX0qtblow_SIE=/206x305/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p13222290_b_v8_ad.jpg',
     },
     {
-      titulo: 'Mohana',
+      titulo: 'Inception',
+      enCines: true,
+      proximosEstrenos: false,
+      generos: [1],
+      poster:
+        'https://m.media-amazon.com/images/M/MV5BMjExMjkwNTQ0Nl5BMl5BanBnXkFtZTcwNTY0OTk1Mw@@._V1_.jpg',
+    },
+    {
+      titulo: 'Grown Ups 2',
       enCines: false,
       proximosEstrenos: true,
       generos: [2],
       poster:
-        'https://images.moviesanywhere.com/5b2c656f643292cfd35771668badc820/44dda68f-dfb2-4974-97aa-239f27e6951f.jpg',
+        'https://images-na.ssl-images-amazon.com/images/S/pv-target-images/f4d59b48a1c106958485d311a31af0c1aa81808b5903ccb79fab5af5050ed6cf._RI_TTW_.jpg',
     },
     {
-      titulo: 'Avengers',
+      titulo: '007 Skyfall',
       enCines: true,
       proximosEstrenos: false,
-      generos: [2, 3],
+      generos: [1, 3],
       poster:
-        'https://images.moviesanywhere.com/a36700f2ab20c7d495566843eea79dde/745c9b06-af55-4510-836d-9a320a3f26f9.jpg',
+        'https://es.web.img3.acsta.net/pictures/15/11/13/08/29/159059.jpg',
     },
     {
-      titulo: 'Inception',
+      titulo: 'Rapidos y furiosos 5',
       enCines: false,
       proximosEstrenos: true,
-      generos: [1],
+      generos: [2, 3],
       poster:
-        'https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_.jpg',
-    },
-    {
-      titulo: 'Rockie 5',
-      enCines: true,
-      proximosEstrenos: false,
-      generos: [1, 2],
-      poster:
-        'https://play-lh.googleusercontent.com/f8yPeTFYv3xr48xgY8tlvi3fGhpyr1jCJPcQn-_Z5wotLWiKArP9vVhapOqY6qhKchLNEg',
+        'https://es.web.img3.acsta.net/medias/nmedia/18/83/53/62/19695928.jpg',
     },
   ];
 
   peliculasOriginal = this.peliculas;
+
   formularioOriginal = {
     titulo: '',
     generoId: 0,
@@ -75,26 +77,19 @@ export class FiltroPeliculasComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.formBuilder.group(this.formularioOriginal);
-    this.leerValoresURL();
-    this.buscarPeliculas(this.form.value);
-
-    this.form = this.formBuilder.group({
-      titulo: '',
-      generoId: 0,
-      proximosEstrenos: false,
-      enCines: false,
-    });
+    this.leerValoresUrl();
+    this.buscarpeliculas(this.form.value);
 
     this.form.valueChanges.subscribe((valores) => {
       this.peliculas = this.peliculasOriginal;
-      this.buscarPeliculas(valores);
-      this.escribirParametrosBusquedaEnURL();
+      this.buscarpeliculas(valores);
+      this.escribirParametrosBusquedaEnUrl();
     });
   }
 
-  private leerValoresURL() {
+  private leerValoresUrl() {
     this.activatedRoute.queryParams.subscribe((params) => {
-      let objeto: any = {};
+      var objeto: any = {};
 
       if (params.titulo) {
         objeto.titulo = params.titulo;
@@ -116,24 +111,21 @@ export class FiltroPeliculasComponent implements OnInit {
     });
   }
 
-  private escribirParametrosBusquedaEnURL() {
-    let queryStrings = [];
-    let valoresFormulario = this.form.value;
+  private escribirParametrosBusquedaEnUrl() {
+    var queryStrings = [];
+    var valoresFormulario = this.form.value;
 
     if (valoresFormulario.titulo) {
       queryStrings.push(`titulo=${valoresFormulario.titulo}`);
     }
-
-    if (valoresFormulario.generoId != '0') {
+    if (valoresFormulario.generoId) {
       queryStrings.push(`generoId=${valoresFormulario.generoId}`);
     }
-
     if (valoresFormulario.proximosEstrenos) {
       queryStrings.push(
         `proximosEstrenos=${valoresFormulario.proximosEstrenos}`
       );
     }
-
     if (valoresFormulario.enCines) {
       queryStrings.push(`enCines=${valoresFormulario.enCines}`);
     }
@@ -141,16 +133,16 @@ export class FiltroPeliculasComponent implements OnInit {
     this.location.replaceState('peliculas/buscar', queryStrings.join('&'));
   }
 
-  buscarPeliculas(valores: any): void {
+  buscarpeliculas(valores: any) {
     if (valores.titulo) {
       this.peliculas = this.peliculas.filter(
         (pelicula) => pelicula.titulo.indexOf(valores.titulo) !== -1
       );
     }
 
-    if (valores.generoId) {
+    if (valores.generoId !== 0) {
       this.peliculas = this.peliculas.filter(
-        (pelicula) => pelicula.generos.indexOf(valores.generoId) !== 1
+        (pelicula) => pelicula.generos.indexOf(valores.generoId) !== -1
       );
     }
 
@@ -165,7 +157,7 @@ export class FiltroPeliculasComponent implements OnInit {
     }
   }
 
-  limpiar(): void {
+  limpiar() {
     this.form.patchValue(this.formularioOriginal);
   }
 }
