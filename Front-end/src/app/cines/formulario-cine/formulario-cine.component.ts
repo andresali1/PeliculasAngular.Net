@@ -1,23 +1,23 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { primeraLetraMayuscula } from 'src/app/utilidades/validadores/primeraLetraMayuscula';
-import { actorCreacionDTO, actorDTO } from '../actor';
+import { cineCreacionDTO } from '../cine';
 
 @Component({
-  selector: 'app-formulario-actores',
-  templateUrl: './formulario-actores.component.html',
-  styleUrls: ['./formulario-actores.component.css'],
+  selector: 'app-formulario-cine',
+  templateUrl: './formulario-cine.component.html',
+  styleUrls: ['./formulario-cine.component.css'],
 })
-export class FormularioActoresComponent implements OnInit {
+export class FormularioCineComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) {}
 
   form: FormGroup;
 
   @Input()
-  modelo: actorDTO;
+  modelo: cineCreacionDTO;
 
   @Output()
-  datos: EventEmitter<actorCreacionDTO> = new EventEmitter<actorCreacionDTO>();
+  datos: EventEmitter<cineCreacionDTO> = new EventEmitter<cineCreacionDTO>();
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -31,9 +31,6 @@ export class FormularioActoresComponent implements OnInit {
           ],
         },
       ],
-      fechaNacimiento: '',
-      foto: '',
-      biografia: '',
     });
 
     if (this.modelo !== undefined) {
@@ -54,14 +51,6 @@ export class FormularioActoresComponent implements OnInit {
     }
 
     return '';
-  }
-
-  archivoSeleccionado(file) {
-    this.form.get('foto').setValue(file);
-  }
-
-  cambioMarkdown(texto: string) {
-    this.form.get('biografia').setValue(texto);
   }
 
   guardarCambios() {

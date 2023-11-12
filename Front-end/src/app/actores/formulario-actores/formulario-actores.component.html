@@ -20,6 +20,8 @@
     (archivoSeleccionado)="archivoSeleccionado($event)"
   ></app-input-img>
 
+  <app-input-markdown (biografia)="cambioMarkdown($event)"></app-input-markdown>
+
   <div>
     <button mat-flat-button color="primary" [disabled]="form.invalid">
       Guardar Cambios
