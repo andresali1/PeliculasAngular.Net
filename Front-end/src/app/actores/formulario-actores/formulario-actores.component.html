@@ -20,7 +20,7 @@
     (archivoSeleccionado)="archivoSeleccionado($event)"
   ></app-input-img>
 
-  <app-input-markdown (biografia)="cambioMarkdown($event)"></app-input-markdown>
+  <app-input-markdown [contenidoMarkdown]="modelo?.biografia" (texto)="cambioMarkdown($event)" [placeHolderTextArea]="'Biografía'"></app-input-markdown>
 
   <div>
     <button mat-flat-button color="primary" [disabled]="form.invalid">

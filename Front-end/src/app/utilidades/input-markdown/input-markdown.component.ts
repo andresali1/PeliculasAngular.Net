@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-input-markdown',
@@ -6,17 +6,16 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./input-markdown.component.css'],
 })
 export class InputMarkdownComponent implements OnInit {
+  @Input()
   contenidoMarkdown = '';
 
+  @Input()
+  placeHolderTextArea: string = 'Texto';
+
   @Output()
-  biografia: EventEmitter<string> = new EventEmitter<string>();
+  texto: EventEmitter<string> = new EventEmitter<string>();
 
   constructor() {}
 
   ngOnInit(): void {}
-
-  inputTextarea(texto: string) {
-    this.contenidoMarkdown = texto;
-    this.biografia.emit(texto);
-  }
 }

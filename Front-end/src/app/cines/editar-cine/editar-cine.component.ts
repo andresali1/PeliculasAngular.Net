@@ -9,7 +9,11 @@ import { cineCreacionDTO, cineDTO } from '../cine';
 export class EditarCineComponent implements OnInit {
   constructor() {}
 
-  modelo: cineDTO = { nombre: 'DivePlaza' };
+  modelo: cineDTO = {
+    nombre: 'Palatino',
+    latitud: 4.715677396176944,
+    longitud: -74.0292799472809,
+  };
 
   ngOnInit(): void {}
 

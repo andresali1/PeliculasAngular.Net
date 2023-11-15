@@ -5,8 +5,10 @@
     <mat-error *ngIf="form.invalid">{{ obtenerErrorCampoNombre() }}</mat-error>
   </mat-form-field>
 
+  <h4>Selecciones el cine en el mapa</h4>
+
   <div>
-    <app-mapa></app-mapa>
+    <app-mapa (coordenadaSeleccionada)="GuardarCoordenada($event)" [coordenadasIniciales]="coordenadaInicial"></app-mapa>
   </div>
 
   <div>
