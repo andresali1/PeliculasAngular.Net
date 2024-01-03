@@ -27,3 +27,16 @@ export function parsearErroresAPI(response: any): string[] {
 
   return resultado;
 }
+
+export function formatearFecha(date: Date) {
+  const formato = new Intl.DateTimeFormat('en', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+
+  const [{ value: month },, { value: day },, { value: year }] =
+    formato.formatToParts(date);
+
+  return `${year}-${month}-${day}`;
+}

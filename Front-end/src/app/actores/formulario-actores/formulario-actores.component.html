@@ -1,3 +1,5 @@
+<app-mostrar-errores [errores]="errores"></app-mostrar-errores>
+
 <form (submit)="guardarCambios()" [formGroup]="form">
   <mat-form-field appearance="outline">
     <mat-label>Nombre*</mat-label>
@@ -20,7 +22,11 @@
     (archivoSeleccionado)="archivoSeleccionado($event)"
   ></app-input-img>
 
-  <app-input-markdown [contenidoMarkdown]="modelo?.biografia" (texto)="cambioMarkdown($event)" [placeHolderTextArea]="'Biografía'"></app-input-markdown>
+  <app-input-markdown
+    [contenidoMarkdown]="modelo?.biografia"
+    (texto)="cambioMarkdown($event)"
+    [placeHolderTextArea]="'Biografía'"
+  ></app-input-markdown>
 
   <div>
     <button mat-flat-button color="primary" [disabled]="form.invalid">
