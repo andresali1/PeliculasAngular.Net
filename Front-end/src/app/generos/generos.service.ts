@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { generoDTO } from './genero';
-import { HttpClient } from '@angular/common/http';
+import { generoCreacionDTO, generoDTO } from './genero';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 
@@ -10,9 +10,38 @@ import { Observable } from 'rxjs';
 export class GenerosService {
   constructor(private http: HttpClient) {}
 
-  private apiUrl = environment.apiUrl;
+  private apiUrl = environment.apiUrl + 'generos';
 
-  public obtenerTodos(): Observable<generoDTO[]> {
-    return this.http.get<generoDTO[]>(this.apiUrl);
+  public obtenerTodos(
+    pagina: number,
+    cantidadRegistrosAMostrar: number
+  ): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('pagina', pagina.toString());
+    params = params.append(
+      'recordsPorPagina',
+      cantidadRegistrosAMostrar.toString()
+    );
+
+    return this.http.get<generoDTO[]>(this.apiUrl, {
+      observe: 'response',
+      params,
+    });
+  }
+
+  public obtenerPorId(id: number): Observable<generoDTO> {
+    return this.http.get<generoDTO>(`${this.apiUrl}/${id}`);
+  }
+
+  public crear(genero: generoCreacionDTO) {
+    return this.http.post(this.apiUrl, genero);
+  }
+
+  public editar(id: number, genero: generoCreacionDTO) {
+    return this.http.put(`${this.apiUrl}/${id}`, genero);
+  }
+
+  public borrar(id: number) {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }

@@ -1,3 +1,6 @@
 <h2>Crear Género</h2>
 
-<app-formulario-generos (datos)="guardarCambios($event)"></app-formulario-generos>
+<app-formulario-generos
+  [errores]="errores"
+  (datos)="guardarCambios($event)"
+></app-formulario-generos>

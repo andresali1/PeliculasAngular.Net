@@ -14,6 +14,9 @@ export class FormularioGenerosComponent implements OnInit {
   form: FormGroup;
 
   @Input()
+  errores: string[] = [];
+
+  @Input()
   modelo: generoCreacionDTO;
 
   @Output()
@@ -34,7 +37,7 @@ export class FormularioGenerosComponent implements OnInit {
       ],
     });
 
-    if(this.modelo !== undefined){
+    if (this.modelo !== undefined) {
       this.form.patchValue(this.modelo);
     }
   }

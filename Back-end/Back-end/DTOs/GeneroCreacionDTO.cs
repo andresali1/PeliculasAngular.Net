@@ -1,13 +1,10 @@
 ﻿using Back_end.Validaciones;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Back_end.Entidades
+namespace Back_end.DTOs
 {
-    public class Genero
+    public class GeneroCreacionDTO
     {
-        public int Id { get; set; }
-
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [StringLength(maximumLength: 50, ErrorMessage = "El campo {0} debe tener un máximo de {1} caracteres")]
         [PrimeraLetraMayuscula]
