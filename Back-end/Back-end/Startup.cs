@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using NetTopologySuite;
+using NetTopologySuite.Geometries;
 
 namespace Back_end
 {
@@ -28,13 +30,23 @@ namespace Back_end
         {
             services.AddAutoMapper(typeof(Startup));
 
+            services.AddSingleton(provider =>
+                new MapperConfiguration(config =>
+                {
+                    var geometryFactory = provider.GetRequiredService<GeometryFactory>();
+                    config.AddProfile(new AutoMapperProfiles(geometryFactory));
+                }).CreateMapper());
+
+            services.AddSingleton<GeometryFactory>(NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326));
+
             services.AddTransient<IAlmacenadorArchivos, AlmacenadorArchivosLocal>();
 
             services.AddHttpContextAccessor();
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("defaultConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("defaultConnection"),
+                    sqlServer => sqlServer.UseNetTopologySuite());
             });
 
             var fronEnd_url = Configuration.GetValue<string>("Frontend_Url");

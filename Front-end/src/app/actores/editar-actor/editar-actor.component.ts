@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { actorCreacionDTO, actorDTO } from '../actor';
+import { ActoresService } from '../actores.service';
+import { parsearErroresAPI } from 'src/app/utilidades/utilidades';
 
 @Component({
   selector: 'app-editar-actor',
@@ -8,22 +10,32 @@ import { actorCreacionDTO, actorDTO } from '../actor';
   styleUrls: ['./editar-actor.component.css'],
 })
 export class EditarActorComponent implements OnInit {
-  constructor(private activatedRoute: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private actoresService: ActoresService,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
-  modelo: actorDTO = {
-    nombre: 'Camilo',
-    fechaNacimiento: new Date(),
-    foto: 'https://concepto.de/wp-content/uploads/2018/08/persona-e1533759204552.jpg',
-    biografia: 'El actor mas novedoso de Hollywood'
-  };
+  modelo: actorDTO;
+  errores: string[] = [];
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
-      // alert(params.id);
+      this.actoresService.obtenerPorId(params.id).subscribe(
+        (actor) => {
+          this.modelo = actor;
+        },
+        (error) => this.router.navigate(['/actores'])
+      );
     });
   }
 
   guardarCambios(actor: actorCreacionDTO) {
-    console.log(actor);
+    this.actoresService.editar(this.modelo.id, actor).subscribe(
+      () => {
+        this.router.navigate(['/actores']);
+      },
+      (error) => (this.errores = parsearErroresAPI(error))
+    );
   }
 }

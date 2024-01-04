@@ -1,3 +1,5 @@
+<app-mostrar-errores [errores]="errores"></app-mostrar-errores>
+
 <form (submit)="guardarCambios()" [formGroup]="form">
   <mat-form-field appearance="outline">
     <mat-label>Nombre*</mat-label>
@@ -8,7 +10,10 @@
   <h4>Selecciones el cine en el mapa</h4>
 
   <div>
-    <app-mapa (coordenadaSeleccionada)="GuardarCoordenada($event)" [coordenadasIniciales]="coordenadaInicial"></app-mapa>
+    <app-mapa
+      (coordenadaSeleccionada)="GuardarCoordenada($event)"
+      [coordenadasIniciales]="coordenadaInicial"
+    ></app-mapa>
   </div>
 
   <div>

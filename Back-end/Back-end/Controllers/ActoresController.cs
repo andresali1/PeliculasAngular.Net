@@ -3,6 +3,9 @@ using Back_end.DTOs;
 using Back_end.Entidades;
 using Back_end.Utilidades;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Back_end.Controllers
@@ -25,6 +28,35 @@ namespace Back_end.Controllers
         }
 
         /// <summary>
+        /// Se obtiene la lista de actores paginada
+        /// </summary>
+        /// <param name="paginacionDTO"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<ActionResult<List<ActorDTO>>> Get([FromQuery] PaginacionDTO paginacionDTO)
+        {
+            var queryable = context.Actores.AsQueryable();
+            await HttpContext.InsertarParametrosPaginacionEnCabecera(queryable);
+            var actores = await queryable.OrderBy(x => x.Nombre).Paginar(paginacionDTO).ToListAsync();
+            return mapper.Map<List<ActorDTO>>(actores);
+        }
+
+        /// <summary>
+        /// Se obtiene un acto por su id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<ActorDTO>> Get(int id)
+        {
+            var actor = await context.Actores.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (actor == null) return NotFound();
+
+            return mapper.Map<ActorDTO>(actor);
+        }
+
+        /// <summary>
         /// Se crea un nuevo actor
         /// </summary>
         /// <param name="actorCreacionDTO"></param>
@@ -41,6 +73,51 @@ namespace Back_end.Controllers
 
             context.Add(actor);
             await context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Método para actualizar un actor en BD
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="actorCreacionDTO"></param>
+        /// <returns></returns>
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Put(int id, [FromForm] ActorCreacionDTO actorCreacionDTO)
+        {
+            var actor = await context.Actores.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (actor == null) return NotFound();
+
+            actor = mapper.Map(actorCreacionDTO, actor);
+
+            if (actorCreacionDTO.Foto != null)
+            {
+                actor.Foto = await almacenadorArchivos.EditaArchivo(contenedor, actorCreacionDTO.Foto, actor.Foto);
+            }
+
+            await context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Se elimina un actor de BD
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var actor = await context.Actores.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (actor == null) return NotFound();
+
+            context.Remove(actor);
+            await context.SaveChangesAsync();
+
+            await almacenadorArchivos.BorrarArchivo(actor.Foto, contenedor);
+
             return NoContent();
         }
     }
