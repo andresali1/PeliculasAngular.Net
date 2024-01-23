@@ -12,5 +12,7 @@ namespace Back_end.Entidades
         [StringLength(maximumLength: 50, ErrorMessage = "El campo {0} debe tener un máximo de {1} caracteres")]
         [PrimeraLetraMayuscula]
         public string Nombre { get; set; }
+
+        public List<PeliculasGeneros> PeliculasGeneros { get; set; }
     }
 }
