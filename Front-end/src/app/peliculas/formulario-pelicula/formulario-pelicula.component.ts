@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { primeraLetraMayuscula } from 'src/app/utilidades/validadores/primeraLetraMayuscula';
 import { PeliculaCreacionDTO, PeliculaDTO } from '../pelicula';
 import { MultipleSelectorModel } from 'src/app/utilidades/selector-multiple/multipleSelectorModel';
+import { actorPeliculaDTO } from 'src/app/actores/actor';
 
 @Component({
   selector: 'app-formulario-pelicula',
@@ -15,6 +16,9 @@ export class FormularioPeliculaComponent implements OnInit {
   form: FormGroup;
 
   @Input()
+  errores: string[] = [];
+
+  @Input()
   modelo: PeliculaDTO;
 
   @Output()
@@ -24,12 +28,19 @@ export class FormularioPeliculaComponent implements OnInit {
   @Input()
   generosNoSeleccionados: MultipleSelectorModel[];
 
+  @Input()
   generosSeleccionados: MultipleSelectorModel[] = [];
 
   @Input()
   cinesNoSeleccionados: MultipleSelectorModel[];
 
+  @Input()
   cinesSeleccionados: MultipleSelectorModel[] = [];
+
+  @Input()
+  actoresSeleccionados: actorPeliculaDTO[] = [];
+
+  imagenCambiada = false;
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -48,8 +59,9 @@ export class FormularioPeliculaComponent implements OnInit {
       trailer: '',
       fechaLanzamiento: '',
       poster: '',
-      generosId: '',
-      cinesId: '',
+      generosIds: '',
+      cinesIds: '',
+      actores: '',
     });
 
     if (this.modelo !== undefined) {
@@ -74,6 +86,7 @@ export class FormularioPeliculaComponent implements OnInit {
 
   obtenerArchivo(archivo: File) {
     this.form.get('poster').setValue(archivo);
+    this.imagenCambiada = true;
   }
 
   obtenerResumen(texto: string) {
@@ -82,9 +95,19 @@ export class FormularioPeliculaComponent implements OnInit {
 
   guardarCambios() {
     const generosIds = this.generosSeleccionados.map((val) => val.llave);
-    this.form.get('generosId').setValue(generosIds);
+    this.form.get('generosIds').setValue(generosIds);
     const cinesIds = this.cinesSeleccionados.map((val) => val.llave);
-    this.form.get('cinesId').setValue(cinesIds);
+    this.form.get('cinesIds').setValue(cinesIds);
+
+    const actores = this.actoresSeleccionados.map((val) => {
+      return { id: val.id, personaje: val.personaje };
+    });
+    this.form.get('actores').setValue(actores);
+
+    if (!this.imagenCambiada) {
+      this.form.patchValue({ poster: null });
+    }
+
     this.datos.emit(this.form.value);
   }
 }

@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { PeliculaCreacionDTO, PeliculaDTO } from '../pelicula';
+import { PeliculasService } from '../peliculas.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MultipleSelectorModel } from 'src/app/utilidades/selector-multiple/multipleSelectorModel';
+import { actorPeliculaDTO } from 'src/app/actores/actor';
 
 @Component({
   selector: 'app-editar-pelicula',
@@ -7,20 +11,68 @@ import { PeliculaCreacionDTO, PeliculaDTO } from '../pelicula';
   styleUrls: ['./editar-pelicula.component.css'],
 })
 export class EditarPeliculaComponent implements OnInit {
-  constructor() {}
+  constructor(
+    private peliculasService: PeliculasService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
+  ) {}
 
-  modelo: PeliculaDTO = {
-    titulo: 'Deadpool',
-    trailer: 'abc',
-    enCines: true,
-    resumen: 'Bueena',
-    fechaLanzamiento: new Date(),
-    poster: 'https://es.web.img3.acsta.net/pictures/18/04/26/11/50/5029006.jpg',
-  };
+  modelo: PeliculaDTO;
+  generosSeleccionados: MultipleSelectorModel[];
+  generosNoSeleccionados: MultipleSelectorModel[];
+  cinesSeleccionados: MultipleSelectorModel[];
+  cinesNoSeleccionados: MultipleSelectorModel[];
+  actoresSeleccionados: actorPeliculaDTO[];
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.activatedRoute.params.subscribe((params) => {
+      this.peliculasService.putGet(params.id).subscribe((peliculaPutGet) => {
+        this.modelo = peliculaPutGet.pelicula;
+
+        this.generosSeleccionados = peliculaPutGet.generosSeleccionados.map(
+          (genero) => {
+            return <MultipleSelectorModel>{
+              llave: genero.id,
+              valor: genero.nombre,
+            };
+          }
+        );
+
+        this.generosNoSeleccionados = peliculaPutGet.generosNoSeleccionados.map(
+          (genero) => {
+            return <MultipleSelectorModel>{
+              llave: genero.id,
+              valor: genero.nombre,
+            };
+          }
+        );
+
+        this.cinesSeleccionados = peliculaPutGet.cinesSeleccionados.map(
+          (cine) => {
+            return <MultipleSelectorModel>{
+              llave: cine.id,
+              valor: cine.nombre,
+            };
+          }
+        );
+
+        this.cinesNoSeleccionados = peliculaPutGet.cinesNoSeleccionados.map(
+          (cine) => {
+            return <MultipleSelectorModel>{
+              llave: cine.id,
+              valor: cine.nombre,
+            };
+          }
+        );
+
+        this.actoresSeleccionados = peliculaPutGet.actores;
+      });
+    });
+  }
 
   guardarCambios(pelicula: PeliculaCreacionDTO) {
-    console.log(pelicula);
+    this.peliculasService
+      .editar(this.modelo.id, pelicula)
+      .subscribe(() => this.router.navigate(['/pelicula/' + this.modelo.id]));
   }
 }

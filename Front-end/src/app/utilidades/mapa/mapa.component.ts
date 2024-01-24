@@ -7,7 +7,7 @@ import {
   marker,
   tileLayer,
 } from 'leaflet';
-import { Coordenada } from './coordenada';
+import { Coordenada, CoordenadaConMensaje } from './coordenada';
 
 @Component({
   selector: 'app-mapa',
@@ -18,7 +18,10 @@ export class MapaComponent implements OnInit {
   constructor() {}
 
   @Input()
-  coordenadasIniciales: Coordenada[] = [];
+  coordenadasIniciales: CoordenadaConMensaje[] = [];
+
+  @Input()
+  soloLectura: boolean = false;
 
   @Output()
   coordenadaSeleccionada: EventEmitter<Coordenada> =
@@ -36,9 +39,15 @@ export class MapaComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.capas = this.coordenadasIniciales.map((valor) =>
-      marker([valor.latitud, valor.longitud])
-    );
+    this.capas = this.coordenadasIniciales.map((valor) => {
+      let marcador = marker([valor.latitud, valor.longitud]);
+
+      if (valor.mensaje) {
+        marcador.bindPopup(valor.mensaje, { autoClose: false, autoPan: false });
+      }
+
+      return marcador;
+    });
 
     if (this.coordenadasIniciales.length > 0) {
       this.options.center = latLng(
@@ -54,18 +63,23 @@ export class MapaComponent implements OnInit {
     const latitud = event.latlng.lat;
     const longitud = event.latlng.lng;
 
-    this.capas = [];
-    this.capas.push(
-      marker([latitud, longitud], {
-        icon: icon({
-          iconSize: [25, 41],
-          iconAnchor: [13, 41],
-          iconUrl: 'marker-icon.png',
-          iconRetinaUrl: 'marker-icon.png',
-          shadowUrl: 'assets/marker-shadow.png',
-        }),
-      })
-    );
-    this.coordenadaSeleccionada.emit({ latitud: latitud, longitud: longitud });
+    if (!this.soloLectura) {
+      this.capas = [];
+      this.capas.push(
+        marker([latitud, longitud], {
+          icon: icon({
+            iconSize: [25, 41],
+            iconAnchor: [13, 41],
+            iconUrl: 'marker-icon.png',
+            iconRetinaUrl: 'marker-icon.png',
+            shadowUrl: 'assets/marker-shadow.png',
+          }),
+        })
+      );
+      this.coordenadaSeleccionada.emit({
+        latitud: latitud,
+        longitud: longitud,
+      });
+    }
   }
 }

@@ -77,6 +77,22 @@ namespace Back_end.Controllers
         }
 
         /// <summary>
+        /// Se busca un actor por nombre
+        /// </summary>
+        /// <param name="nombre"></param>
+        /// <returns></returns>
+        [HttpPost("buscarPorNombre")]
+        public async Task<ActionResult<List<PeliculaActorDTO>>> BuscarPorNombre([FromBody] string nombre)
+        {
+            if (string.IsNullOrWhiteSpace(nombre)) { return new List<PeliculaActorDTO>(); }
+            return await context.Actores
+                .Where(x => x.Nombre.Contains(nombre))
+                .Select(x => new PeliculaActorDTO { Id = x.Id, Nombre = x.Nombre, Foto = x.Foto })
+                .Take(5)
+                .ToListAsync();
+        }
+
+        /// <summary>
         /// Método para actualizar un actor en BD
         /// </summary>
         /// <param name="id"></param>

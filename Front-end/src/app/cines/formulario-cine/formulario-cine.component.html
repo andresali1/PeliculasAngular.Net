@@ -9,7 +9,7 @@
 
   <h4>Selecciones el cine en el mapa</h4>
 
-  <div>
+  <div style="position: relative">
     <app-mapa
       (coordenadaSeleccionada)="GuardarCoordenada($event)"
       [coordenadasIniciales]="coordenadaInicial"
@@ -17,7 +17,12 @@
   </div>
 
   <div>
-    <button mat-flat-button color="primary" [disabled]="form.invalid">
+    <button
+      style="margin-top: 650px"
+      mat-flat-button
+      color="primary"
+      [disabled]="form.invalid"
+    >
       Guardar Cambios
     </button>
     <a mat-stroked-button routerLink="/cines">Cancelar</a>
