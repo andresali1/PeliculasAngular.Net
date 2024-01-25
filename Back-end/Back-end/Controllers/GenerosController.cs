@@ -43,6 +43,17 @@ namespace Back_end.Controllers
         }
 
         /// <summary>
+        /// Método para obtener la lista de todos los generos
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("todos")]
+        public async Task<ActionResult<List<GeneroDTO>>> Todos()
+        {
+            var generos = await context.Generos.ToListAsync();
+            return mapper.Map<List<GeneroDTO>>(generos);
+        }
+
+        /// <summary>
         /// Se obtiene el genero por su Id
         /// </summary>
         /// <param name="id"></param>

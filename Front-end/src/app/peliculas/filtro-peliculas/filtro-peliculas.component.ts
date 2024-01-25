@@ -2,6 +2,11 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { generoDTO } from 'src/app/generos/genero';
+import { GenerosService } from 'src/app/generos/generos.service';
+import { PeliculasService } from '../peliculas.service';
+import { PeliculaDTO } from '../pelicula';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-filtro-peliculas',
@@ -12,61 +17,19 @@ export class FiltroPeliculasComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private location: Location,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private generosService: GenerosService,
+    private peliculasService: PeliculasService
   ) {}
 
   form: FormGroup;
 
-  generos = [
-    { id: 1, nombre: 'Drama' },
-    { id: 2, nombre: 'Comedia' },
-    { id: 3, nombre: 'Acción' },
-  ];
+  generos: generoDTO[] = [];
+  paginaActual = 1;
+  cantidadElementosAMostrar = 10;
+  cantidadElementos;
 
-  peliculas = [
-    {
-      titulo: 'Spider Man 1',
-      enCines: false,
-      proximosEstrenos: true,
-      generos: [2, 3],
-      poster:
-        'https://resizing.flixster.com/b9rNJVStNlFHkXlX0qtblow_SIE=/206x305/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p13222290_b_v8_ad.jpg',
-    },
-    {
-      titulo: 'Inception',
-      enCines: true,
-      proximosEstrenos: false,
-      generos: [1],
-      poster:
-        'https://m.media-amazon.com/images/M/MV5BMjExMjkwNTQ0Nl5BMl5BanBnXkFtZTcwNTY0OTk1Mw@@._V1_.jpg',
-    },
-    {
-      titulo: 'Grown Ups 2',
-      enCines: false,
-      proximosEstrenos: true,
-      generos: [2],
-      poster:
-        'https://images-na.ssl-images-amazon.com/images/S/pv-target-images/f4d59b48a1c106958485d311a31af0c1aa81808b5903ccb79fab5af5050ed6cf._RI_TTW_.jpg',
-    },
-    {
-      titulo: '007 Skyfall',
-      enCines: true,
-      proximosEstrenos: false,
-      generos: [1, 3],
-      poster:
-        'https://es.web.img3.acsta.net/pictures/15/11/13/08/29/159059.jpg',
-    },
-    {
-      titulo: 'Rapidos y furiosos 5',
-      enCines: false,
-      proximosEstrenos: true,
-      generos: [2, 3],
-      poster:
-        'https://es.web.img3.acsta.net/medias/nmedia/18/83/53/62/19695928.jpg',
-    },
-  ];
-
-  peliculasOriginal = this.peliculas;
+  peliculas: PeliculaDTO[];
 
   formularioOriginal = {
     titulo: '',
@@ -76,14 +39,17 @@ export class FiltroPeliculasComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.form = this.formBuilder.group(this.formularioOriginal);
-    this.leerValoresUrl();
-    this.buscarpeliculas(this.form.value);
+    this.generosService.obtenerTodos().subscribe((generos) => {
+      this.generos = generos;
 
-    this.form.valueChanges.subscribe((valores) => {
-      this.peliculas = this.peliculasOriginal;
-      this.buscarpeliculas(valores);
-      this.escribirParametrosBusquedaEnUrl();
+      this.form = this.formBuilder.group(this.formularioOriginal);
+      this.leerValoresUrl();
+      this.buscarpeliculas(this.form.value);
+
+      this.form.valueChanges.subscribe((valores) => {
+        this.buscarpeliculas(valores);
+        this.escribirParametrosBusquedaEnUrl();
+      });
     });
   }
 
@@ -134,27 +100,19 @@ export class FiltroPeliculasComponent implements OnInit {
   }
 
   buscarpeliculas(valores: any) {
-    if (valores.titulo) {
-      this.peliculas = this.peliculas.filter(
-        (pelicula) => pelicula.titulo.indexOf(valores.titulo) !== -1
-      );
-    }
+    valores.pagina = this.paginaActual;
+    valores.recordsPorPagina = this.cantidadElementosAMostrar;
+    this.peliculasService.filtrar(valores).subscribe((response) => {
+      this.peliculas = response.body;
+      this.escribirParametrosBusquedaEnUrl();
+      this.cantidadElementos = response.headers.get('cantidadTotalRegistros');
+    });
+  }
 
-    if (valores.generoId !== 0) {
-      this.peliculas = this.peliculas.filter(
-        (pelicula) => pelicula.generos.indexOf(valores.generoId) !== -1
-      );
-    }
-
-    if (valores.proximosEstrenos) {
-      this.peliculas = this.peliculas.filter(
-        (pelicula) => pelicula.proximosEstrenos
-      );
-    }
-
-    if (valores.enCines) {
-      this.peliculas = this.peliculas.filter((pelicula) => pelicula.enCines);
-    }
+  paginatorUpdate(datos: PageEvent) {
+    this.paginaActual = datos.pageIndex;
+    this.cantidadElementosAMostrar = datos.pageSize;
+    this.buscarpeliculas(this.form.value);
   }
 
   limpiar() {

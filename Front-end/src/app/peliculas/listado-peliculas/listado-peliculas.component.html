@@ -21,7 +21,14 @@
           >
             Editar
           </a>
-          <button mat-flat-button color="warn" type="button">Borrar</button>
+          <button
+            mat-flat-button
+            color="warn"
+            type="button"
+            (click)="borrar(pelicula.id)"
+          >
+            Borrar
+          </button>
         </div>
       </div>
     </div>

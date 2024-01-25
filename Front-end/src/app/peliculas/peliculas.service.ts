@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -27,14 +27,22 @@ export class PeliculasService {
     return this.http.get<PeliculaDTO>(`${this.apiUrl}/${id}`);
   }
 
+  public filtrar(valores: any): Observable<any> {
+    const params = new HttpParams({ fromObject: valores });
+    return this.http.get<PeliculaDTO[]>(`${this.apiUrl}/filtrar`, {
+      params,
+      observe: 'response',
+    });
+  }
+
   public postGet(): Observable<PeliculaPostGet> {
     return this.http.get<PeliculaPostGet>(`${this.apiUrl}/postget`);
   }
 
-  public crear(pelicula: PeliculaCreacionDTO) {
+  public crear(pelicula: PeliculaCreacionDTO): Observable<number> {
     const formData = this.construirFormData(pelicula);
 
-    return this.http.post(this.apiUrl, formData);
+    return this.http.post<number>(this.apiUrl, formData);
   }
 
   public putGet(id: number): Observable<PeliculaPutGetDTO> {
@@ -45,6 +53,10 @@ export class PeliculasService {
     const formData = this.construirFormData(pelicula);
 
     return this.http.put(`${this.apiUrl}/${id}`, formData);
+  }
+
+  public borrar(id: number) {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
   private construirFormData(pelicula: PeliculaCreacionDTO): FormData {
