@@ -5,11 +5,11 @@
         *ngFor="let pelicula of peliculas; let index = index"
         class="pelicula-contenedor"
       >
-        <a [routerLink]="'/peliculas/editar/' + pelicula.id">
+        <a [routerLink]="'/pelicula/' + pelicula.id">
           <img [src]="pelicula.poster" alt="Poster" />
         </a>
         <p>
-          <a [routerLink]="'/peliculas/editar/' + pelicula.id">{{
+          <a [routerLink]="'/pelicula/' + pelicula.id">{{
             pelicula.titulo
           }}</a>
         </p>
@@ -19,7 +19,7 @@
               <a
                 mat-flat-button
                 color="primary"
-                [routerLink]="'/peliculas/editar/' + pelicula.id"
+                [routerLink]="'/pelicula/' + pelicula.id"
               >
                 Editar
               </a>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { credencialesUsuario } from '../seguridad';
 import { SeguridadService } from '../seguridad.service';
 import { parsearErroresAPI } from 'src/app/utilidades/utilidades';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-registro',
@@ -9,7 +10,10 @@ import { parsearErroresAPI } from 'src/app/utilidades/utilidades';
   styleUrls: ['./registro.component.css'],
 })
 export class RegistroComponent implements OnInit {
-  constructor(private seguridadService: SeguridadService) {}
+  constructor(
+    private seguridadService: SeguridadService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {}
 
@@ -18,7 +22,8 @@ export class RegistroComponent implements OnInit {
   registrar(credenciales: credencialesUsuario) {
     this.seguridadService.registrar(credenciales).subscribe(
       (respuesta) => {
-        console.log(respuesta);
+        this.seguridadService.guardarToken(respuesta);
+        this.router.navigate(['/']);
       },
       (error) => (this.errores = parsearErroresAPI(error))
     );

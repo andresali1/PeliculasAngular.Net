@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PeliculaDTO } from '../pelicula';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { CoordenadaConMensaje } from 'src/app/utilidades/mapa/coordenada';
+import { RatingService } from 'src/app/utilidades/rating/rating.service';
 
 @Component({
   selector: 'app-detalle-pelicula',
@@ -19,7 +20,8 @@ export class DetallePeliculaComponent implements OnInit {
   constructor(
     private peliculasService: PeliculasService,
     private activatedRoute: ActivatedRoute,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private ratingService: RatingService
   ) {}
 
   ngOnInit(): void {
@@ -36,6 +38,12 @@ export class DetallePeliculaComponent implements OnInit {
           };
         });
       });
+    });
+  }
+
+  rated(puntuacion: number) {
+    this.ratingService.rate(this.pelicula.id, puntuacion).subscribe(() => {
+      alert('Su voto ha sido recibido!');
     });
   }
 

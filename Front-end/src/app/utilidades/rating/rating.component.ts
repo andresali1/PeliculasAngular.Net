@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { SeguridadService } from 'src/app/seguridad/seguridad.service';
 
 @Component({
   selector: 'app-rating',
   templateUrl: './rating.component.html',
-  styleUrls: ['./rating.component.css']
+  styleUrls: ['./rating.component.css'],
 })
 export class RatingComponent implements OnInit {
-
   @Input()
   maximoRating = 5;
   @Input()
@@ -17,29 +17,32 @@ export class RatingComponent implements OnInit {
   votado = false;
   ratingAnterior;
 
-  constructor() { }
+  constructor(private seguridadService: SeguridadService) {}
 
   ngOnInit(): void {
     this.maximoRatingArr = Array(this.maximoRating).fill(0);
   }
 
-  manejarMouseEnter(index: number): void{
+  manejarMouseEnter(index: number): void {
     this.ratingSeleccionado = index + 1;
   }
 
-  manejarMouseLeave(){
-    if (this.ratingAnterior !== 0){
+  manejarMouseLeave() {
+    if (this.ratingAnterior !== 0) {
       this.ratingSeleccionado = this.ratingAnterior;
-    } else{
+    } else {
       this.ratingSeleccionado = 0;
     }
   }
 
-  rate(index: number): void{
-    this.ratingSeleccionado = index + 1;
-    this.votado = true;
-    this.ratingAnterior = this.ratingSeleccionado;
-    this.rated.emit(this.ratingSeleccionado);
+  rate(index: number): void {
+    if (this.seguridadService.estaLogueado()) {
+      this.ratingSeleccionado = index + 1;
+      this.votado = true;
+      this.ratingAnterior = this.ratingSeleccionado;
+      this.rated.emit(this.ratingSeleccionado);
+    } else {
+      alert('No puede realizar esta acción');
+    }
   }
-
 }

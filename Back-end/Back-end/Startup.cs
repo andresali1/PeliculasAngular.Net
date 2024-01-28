@@ -16,6 +16,7 @@ using Microsoft.OpenApi.Models;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 namespace Back_end
@@ -24,6 +25,7 @@ namespace Back_end
     {
         public Startup(IConfiguration configuration)
         {
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             Configuration = configuration;
         }
 
