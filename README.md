@@ -12,7 +12,7 @@ Proyecto WebApi que contiene un sistema de gestión de Peliculas, actores, cinem
 
 ### :open_book: Configuración  
 1. En una carpeta del sistema ejecutar el comando :arrow_forward: git clone https://github.com/andresali1/PeliculasAngular.Net.git
-2. Ubicarse dentro de la carpeta "Front-end" y abrir la solución
+2. Ubicarse dentro de la carpeta "Back-end" y abrir la solución
 3. Verificar lass cadenas configuración en los archivos "appsettings.json" y colocar la cadena de conexión propia a SQL Server
 4. Abrir la Consola del administrado de paquetes y ejecutar el comando :arrow_forward: Update-Database, o si se usa dotnet cli usar el comando "dotnet ef database update"
 5. Ejecutar el Proyecto Back-end
