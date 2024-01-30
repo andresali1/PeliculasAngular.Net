@@ -4,7 +4,7 @@ Proyecto WebApi que contiene un sistema de gestión de Peliculas, actores, cinem
 ### Tecnologías Utilizadas
 :keyboard: C# 9  
 :keyboard: .Net 5  
-:computer: Visual Studio 2022 
+:computer: Visual Studio 2022  
 :file_cabinet: Sql Server 2019 - 15.0.2000.5  
 :window: Angular CLI: 12.2.2  
 :keyboard: Node: 12.14.1  
